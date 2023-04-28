@@ -113,7 +113,7 @@ export default class MainScene extends Phaser.Scene {
         this.physics.add.collider(this.bombs, this.player, this.handleHitBomb, undefined, this)
     }
 
-    private handleHitBomb(player: Phaser.GameObjects.GameObject, bomb: Phaser.GameObjects.GameObject) {
+    private handleHitBomb() {
         this.physics.pause()
 
         this.player?.setTint(0xff0000);
@@ -123,7 +123,7 @@ export default class MainScene extends Phaser.Scene {
         // this.gameOver = true
     }
 
-    private handleCollectStar(player: Phaser.GameObjects.GameObject, star: Phaser.GameObjects.GameObject) {
+    private handleCollectStar(player: Phaser.Physics.Arcade.Sprite, star: Phaser.Physics.Arcade.Sprite) {
         const s = star as Phaser.Physics.Arcade.Image
         s.disableBody(true, true)
 
