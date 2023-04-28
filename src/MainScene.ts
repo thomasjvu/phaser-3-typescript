@@ -11,7 +11,7 @@ export default class MainScene extends Phaser.Scene {
 
     private bombs?: Phaser.Physics.Arcade.Group
 
-    private gameOver = false
+    // private gameOver = false
 
     constructor() {
         super("main-scene");
@@ -89,6 +89,8 @@ export default class MainScene extends Phaser.Scene {
             const child = c as Phaser.Physics.Arcade.Image
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8))
             child.setCollideWorldBounds(true)
+
+            return null;
         })
 
 
@@ -118,7 +120,7 @@ export default class MainScene extends Phaser.Scene {
 
         this.player?.anims.play('turn')
 
-        this.gameOver = true
+        // this.gameOver = true
     }
 
     private handleCollectStar(player: Phaser.GameObjects.GameObject, star: Phaser.GameObjects.GameObject) {
@@ -132,6 +134,8 @@ export default class MainScene extends Phaser.Scene {
             this.stars.children.iterate(c => {
                 const child = c as Phaser.Physics.Arcade.Image
                 child.enableBody(true, child.x, 0, true, true)
+
+                return null;
             })
         }
         if (this.player) {
