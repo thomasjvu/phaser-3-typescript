@@ -97,7 +97,7 @@ export default class MainScene extends Phaser.Scene {
         this.physics.add.collider(this.stars, this.platforms);
 
         // add stars vs player collider
-        this.physics.add.overlap(this.player, this.stars, this.handleCollectStar, undefined, this);
+        this.physics.add.overlap(this.player, this.stars, this.handleCollectStar, null, this);
 
         // add score
         this.scoreText = this.add.text(16, 16, "score: 0", {
@@ -123,19 +123,18 @@ export default class MainScene extends Phaser.Scene {
     }
 
     private handleCollectStar(player: Phaser.Physics.Arcade.Sprite, star: Phaser.Physics.Arcade.Image) {
-        const s = star as Phaser.Physics.Arcade.Image;
-        s.disableBody(true, true);
+        star.disableBody(true, true);
 
         this.score += 10;
         this.scoreText?.setText(`Score: ${this.score}`);
 
         if (this.stars?.countActive(true) === 0) {
-            this.stars.children.iterate((c) => {
-                const child = c as Phaser.Physics.Arcade.Image;
-                child.enableBody(true, child.x, 0, true, true);
-                return null;
+            this.stars.children.iterate((child) => {
+                const star = child as Phaser.Physics.Arcade.Image;
+                star.enableBody(true, star.x, 0, true, true);
             });
         }
+
         if (this.player) {
             const x = this.player.x < 400 ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
@@ -145,6 +144,7 @@ export default class MainScene extends Phaser.Scene {
             bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
         }
     }
+
     update() {
         // add character controls
         if (this.cursors?.left?.isDown) {
