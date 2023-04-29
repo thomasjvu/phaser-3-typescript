@@ -97,7 +97,7 @@ export default class MainScene extends Phaser.Scene {
         this.physics.add.collider(this.stars, this.platforms);
 
         // add stars vs player collider
-        this.physics.add.overlap(this.player, this.stars, this.handleCollectStar, null, this);
+        this.physics.add.overlap(this.player, this.stars, this.handleCollectStar, undefined, this);
 
         // add score
         this.scoreText = this.add.text(16, 16, "score: 0", {
