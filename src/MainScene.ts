@@ -122,7 +122,7 @@ export default class MainScene extends Phaser.Scene {
         // this.gameOver = true
     }
 
-    private handleCollectStar(player: any, star: Phaser.Physics.Arcade.Image) {
+    private handleCollectStar(player: any, star: any) {
         star.disableBody(true, true);
 
         this.score += 10;
