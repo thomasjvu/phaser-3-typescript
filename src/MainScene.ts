@@ -145,6 +145,8 @@ export default class MainScene extends Phaser.Scene {
             bomb.setCollideWorldBounds(true);
             bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
         }
+
+        return player
     }
 
     update() {
