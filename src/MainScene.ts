@@ -3,13 +3,13 @@ import Phaser from "phaser";
 export default class MainScene extends Phaser.Scene {
     private platforms?: Phaser.Physics.Arcade.StaticGroup;
     private player?: Phaser.Physics.Arcade.Sprite;
-    private cursors?: Phaser.Types.Input.Keyboard.CursorKeys
-    private stars?: Phaser.Physics.Arcade.Group
+    private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
+    private stars?: Phaser.Physics.Arcade.Group;
 
-    private score = 0
-    private scoreText?: Phaser.GameObjects.Text
+    private score = 0;
+    private scoreText?: Phaser.GameObjects.Text;
 
-    private bombs?: Phaser.Physics.Arcade.Group
+    private bombs?: Phaser.Physics.Arcade.Group;
 
     // private gameOver = false
 
@@ -58,7 +58,7 @@ export default class MainScene extends Phaser.Scene {
 
         this.anims.create({
             key: "turn",
-            frames: [ {key: 'dude', frame: 4 }],
+            frames: [{ key: "dude", frame: 4 }],
             frameRate: 20,
         });
 
@@ -73,97 +73,92 @@ export default class MainScene extends Phaser.Scene {
         });
 
         // add player vs platform collider
-        this.physics.add.collider(this.player, this.platforms)
+        this.physics.add.collider(this.player, this.platforms);
 
         // add keys
-        this.cursors = this.input?.keyboard?.createCursorKeys()
+        this.cursors = this.input?.keyboard?.createCursorKeys();
 
         // add stars
         this.stars = this.physics.add.group({
-            key: 'star',
+            key: "star",
             repeat: 11,
-            setXY: {x: 12, y: 0, stepX: 70}
-        })
+            setXY: { x: 12, y: 0, stepX: 70 },
+        });
 
         this.stars.children.iterate((c) => {
-            const child = c as Phaser.Physics.Arcade.Image
-            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8))
-            child.setCollideWorldBounds(true)
+            const child = c as Phaser.Physics.Arcade.Image;
+            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+            child.setCollideWorldBounds(true);
 
             return null;
-        })
-
+        });
 
         // add stars vs platform collider
-        this.physics.add.collider(this.stars, this.platforms)
+        this.physics.add.collider(this.stars, this.platforms);
 
         // add stars vs player collider
-        this.physics.add.overlap(this.player, this.stars, this.handleCollectStar, undefined, this)
+        this.physics.add.overlap(this.player, this.stars, this.handleCollectStar, undefined, this);
 
         // add score
-        this.scoreText = this.add.text(16, 16, 'score: 0', {
-            fontSize: '32px',
-            color: '#000'
-        })
+        this.scoreText = this.add.text(16, 16, "score: 0", {
+            fontSize: "32px",
+            color: "#000",
+        });
 
         // add bombs
-        this.bombs = this.physics.add.group()
+        this.bombs = this.physics.add.group();
 
-        this.physics.add.collider(this.bombs, this.platforms)
-        this.physics.add.collider(this.bombs, this.player, this.handleHitBomb, undefined, this)
+        this.physics.add.collider(this.bombs, this.platforms);
+        this.physics.add.collider(this.bombs, this.player, this.handleHitBomb, undefined, this);
     }
 
     private handleHitBomb() {
-        this.physics.pause()
+        this.physics.pause();
 
         this.player?.setTint(0xff0000);
 
-        this.player?.anims.play('turn')
+        this.player?.anims.play("turn");
 
         // this.gameOver = true
     }
 
     private handleCollectStar(player: Phaser.Physics.Arcade.Sprite, star: Phaser.Physics.Arcade.Image) {
-        const s = star as Phaser.Physics.Arcade.Image
-        s.disableBody(true, true)
+        const s = star as Phaser.Physics.Arcade.Image;
+        s.disableBody(true, true);
 
-        this.score += 10
-        this.scoreText?.setText(`Score: ${this.score}`)
+        this.score += 10;
+        this.scoreText?.setText(`Score: ${this.score}`);
 
         if (this.stars?.countActive(true) === 0) {
-            this.stars.children.iterate(c => {
-                const child = c as Phaser.Physics.Arcade.Image
-                child.enableBody(true, child.x, 0, true, true)
+            this.stars.children.iterate((c) => {
+                const child = c as Phaser.Physics.Arcade.Image;
+                child.enableBody(true, child.x, 0, true, true);
                 return null;
-            })
+            });
         }
         if (this.player) {
-            const x = this.player.x < 400 ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400)
+            const x = this.player.x < 400 ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
-            const bomb: Phaser.Physics.Arcade.Image = this.bombs?.create(x, 16, 'bomb')
-            bomb.setBounce(1)
-            bomb.setCollideWorldBounds(true)
-            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20)
+            const bomb: Phaser.Physics.Arcade.Image = this.bombs?.create(x, 16, "bomb");
+            bomb.setBounce(1);
+            bomb.setCollideWorldBounds(true);
+            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
         }
     }
-
     update() {
-
         // add character controls
         if (this.cursors?.left?.isDown) {
-            this.player?.setVelocityX(-160)
-            this.player?.anims.play('left', true)
-        }
-        else if (this.cursors?.right?.isDown) {
-            this.player?.setVelocityX(160)
-            this.player?.anims.play('right', true)
-        }
-        else {
-            this.player?.setVelocityX(0)
-            this.player?.anims.play('turn')
+            this.player?.setVelocityX(-160);
+            this.player?.anims.play("left", true);
+        } else if (this.cursors?.right?.isDown) {
+            this.player?.setVelocityX(160);
+            this.player?.anims.play("right", true);
+        } else {
+            this.player?.setVelocityX(0);
+            this.player?.anims.play("turn");
         }
         if (this.cursors?.up?.isDown && this.player?.body?.touching.down) {
-            this.player?.setVelocityY(-330)
+            this.player?.setVelocityY(-330);
         }
     }
 }
