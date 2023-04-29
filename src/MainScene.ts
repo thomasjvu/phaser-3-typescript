@@ -123,7 +123,7 @@ export default class MainScene extends Phaser.Scene {
         // this.gameOver = true
     }
 
-    private handleCollectStar(player: Phaser.Physics.Arcade.Sprite, star: Phaser.Physics.Arcade.Sprite) {
+    private handleCollectStar(player: Phaser.Physics.Arcade.Sprite, star: Phaser.Physics.Arcade.Image) {
         const s = star as Phaser.Physics.Arcade.Image
         s.disableBody(true, true)
 
@@ -134,7 +134,6 @@ export default class MainScene extends Phaser.Scene {
             this.stars.children.iterate(c => {
                 const child = c as Phaser.Physics.Arcade.Image
                 child.enableBody(true, child.x, 0, true, true)
-
                 return null;
             })
         }
